@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IoT Smart Home - Dashboard</title>
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js để vẽ biểu đồ -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Nhúng file CSS riêng -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Thanh điều hướng bên trái -->
+  <div class="sidebar">
+    <h2>🏠 SmartHome IoT</h2>
+    <a class="active" onclick="switchTab('dashboard', this)"><i class="fa-solid fa-house"></i> Tổng quan</a>
+    <a onclick="switchTab('sensors', this)"><i class="fa-solid fa-chart-line"></i> Biểu đồ cảm biến</a>
+    <a onclick="switchTab('logs', this)"><i class="fa-solid fa-clock-rotate-left"></i> Nhật ký hoạt động</a>
+  </div>
+
+  <!-- Khu vực hiển thị chính -->
+  <div class="main-content">
+    <header>
+      <h1>Bảng Điều Khiển Nhà Thông Minh</h1>
+      <span class="badge" id="systemStatus">● Hệ thống: Trực tuyến</span>
+    </header>
+
+    <!-- TAB 1: TỔNG QUAN -->
+    <div id="dashboard" class="tab-pane active">
+      <div class="grid">
+        <div class="card">
+          <i class="fa-solid fa-lightbulb" id="iconLight"></i>
+          <h3>Đèn Phòng Khách</h3>
+          <label class="switch">
+            <input type="checkbox" id="lightSwitch"
+              onchange="toggleDevice('Đèn phòng khách', this.checked, 'lightStatus', 'iconLight')">
+            <span class="slider"></span>
+          </label>
+          <div id="lightStatus" class="status-text">Đang tắt</div>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-fan" id="iconFan"></i>
+          <h3>Quạt Thông Gió</h3>
+          <label class="switch">
+            <input type="checkbox" id="fanSwitch"
+              onchange="toggleDevice('Quạt thông gió', this.checked, 'fanStatus', 'iconFan')">
+            <span class="slider"></span>
+          </label>
+          <div id="fanStatus" class="status-text">Đang tắt</div>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-temperature-half"></i>
+          <h3>Nhiệt Độ Phòng</h3>
+          <div class="sensor-val"><span id="tempVal">28.5</span>°C</div>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-droplet"></i>
+          <h3>Độ Ẩm Không Khí</h3>
+          <div class="sensor-val"><span id="humiVal">65</span>%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: BIỂU ĐỒ -->
+    <div id="sensors" class="tab-pane">
+      <div class="chart-box">
+        <h3>Biểu đồ Biến thiên Nhiệt độ & Độ ẩm</h3>
+        <canvas id="myChart" width="400" height="150"></canvas>
+      </div>
+    </div>
+
+    <!-- TAB 3: NHẬT KÝ -->
+    <div id="logs" class="tab-pane">
+      <div class="logs-container">
+        <h3>Lịch sử Thao tác Người dùng</h3>
+        <ul id="logList">
+          <!-- Dòng log khởi động sẽ được JavaScript tự động điền giờ thật -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nhúng file JavaScript riêng -->
+  <script src="script.js"></script>
+</body>
+
+</html>
