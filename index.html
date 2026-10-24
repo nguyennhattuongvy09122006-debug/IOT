@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BaseHome - IoT Smart Home Dashboard</title>
+    <link rel="icon" type="image/png" href="basehome.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div>
+                <h1>BaseHome. <span>IoT Dashboard.</span></h1>
+                <p>Real-time Smart Home Monitoring & Control System</p>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle-btn" onclick="toggleTheme()">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                    <span id="themeText">Dark</span>
+                </button>
+                <div class="status-badge">
+                    <span class="status-dot"></span> System Status: <strong>Connected</strong>
+                </div>
+            </div>
+        </header>
+
+        <!-- Top Metrics Cards -->
+        <div class="metrics-grid">
+            <div class="card" style="margin-bottom: 0;">
+                <div class="card-header">
+                    <span>Temperature</span>
+                    <i class="fa-solid fa-temperature-high" style="color: #f97316;"></i>
+                </div>
+                <div class="card-value" id="tempValue">28.5 °C</div>
+                <div class="card-desc">Normal climate level</div>
+            </div>
+
+            <div class="card" style="margin-bottom: 0;">
+                <div class="card-header">
+                    <span>Humidity</span>
+                    <i class="fa-solid fa-droplet" style="color: #0ea5e9;"></i>
+                </div>
+                <div class="card-value" id="humidityValue">65 %</div>
+                <div class="card-desc">Optimal room humidity</div>
+            </div>
+
+            <div class="card" style="margin-bottom: 0;">
+                <div class="card-header">
+                    <span>Active Devices</span>
+                    <i class="fa-solid fa-bolt" style="color: #eab308;"></i>
+                </div>
+                <div class="card-value" id="activeCount">1 <span style="font-size: 14px; font-weight: normal; color: var(--text-sub);">/ 2 devices</span></div>
+                <div class="card-desc">Energy saving mode enabled</div>
+            </div>
+        </div>
+
+        <!-- Main Grid Section -->
+        <div class="main-grid" style="margin-top: 25px;">
+            <!-- Left: Device Control -->
+            <div class="card" style="margin-bottom: 0;">
+                <div class="box-title">
+                    <span>Control Panel</span>
+                    <i class="fa-solid fa-sliders" style="color: var(--text-sub);"></i>
+                </div>
+                <div class="devices-grid">
+                    <div class="device-item">
+                        <div class="device-top">
+                            <span class="device-name"><i class="fa-regular fa-lightbulb"></i> Living Room Light</span>
+                            <label class="switch">
+                                <input type="checkbox" id="lightToggle" checked onchange="toggleDevice('light')">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <span class="badge-status badge-on" id="lightBadge">ON</span>
+                    </div>
+
+                    <div class="device-item">
+                        <div class="device-top">
+                            <span class="device-name"><i class="fa-solid fa-fan" id="fanIcon"></i> Smart Fan</span>
+                            <label class="switch">
+                                <input type="checkbox" id="fanToggle" onchange="toggleDevice('fan')">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <span class="badge-status badge-off" id="fanBadge">OFF</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Activity History -->
+            <div class="card" style="margin-bottom: 0;">
+                <div class="box-title">
+                    <span>Activity History</span>
+                    <i class="fa-solid fa-clock-rotate-left" style="color: var(--text-sub);"></i>
+                </div>
+                <table class="log-table">
+                    <thead>
+                        <tr>
+                            <th>DEVICE / SENSOR</th>
+                            <th>ACTION</th>
+                            <th>TIME</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="card">
+            <div class="box-title">
+                <span>Real-time Sensor Data Analytics</span>
+                <i class="fa-solid fa-chart-line" style="color: var(--text-sub);"></i>
+            </div>
+            <div style="height: 280px; position: relative;">
+                <canvas id="sensorChart"></canvas>
+            </div>
+        </div>
+
+        <!-- AI Smart Insights -->
+        <div class="ai-card" id="aiCard">
+            <div class="ai-icon">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+            <div class="ai-content">
+                <h4>AI Smart Assistant & Recommendations</h4>
+                <p id="aiMessage">System environment is stable. Temperature and humidity are at optimal levels.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI CHATBOT WIDGET -->
+    <button class="chatbot-btn" onclick="toggleChatbot()">
+        <i class="fa-solid fa-robot"></i>
+    </button>
+
+    <div class="chatbot-window" id="chatbotWindow">
+        <div class="chatbot-header">
+            <span><i class="fa-solid fa-robot"></i> BaseHome Assistant</span>
+            <i class="fa-solid fa-xmark" style="cursor: pointer;" onclick="toggleChatbot()"></i>
+        </div>
+        <div class="chatbot-messages" id="chatMessages">
+            <div class="chat-msg bot">Xin chào! Tôi là Trợ lý AI BaseHome. Bạn có thể hỏi tôi về nhiệt độ, độ ẩm, trạng thái đèn/quạt hoặc yêu cầu điều khiển thiết bị nhé!</div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatInput" placeholder="Nhập tin nhắn..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendChatMessage()">Gửi</button>
+        </div>
+    </div>
+
+    <!-- Nhúng file logic JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
